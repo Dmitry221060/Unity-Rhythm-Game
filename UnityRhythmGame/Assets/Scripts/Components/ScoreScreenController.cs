@@ -25,18 +25,19 @@ public class ScoreScreenController : MonoBehaviour {
     }
 
     private void Init() {
-        networkManager.ShareScore(gameController.level, gameController.score);
+        networkManager.ShareScore(gameController.levelName, gameController.score);
 
         TMP_Text scoreTextComponent = score.GetComponent<TMP_Text>();
         TMP_Text leaderboardTextComponent = leaderboard.GetComponent<TMP_Text>();
 
         scoreTextComponent.text = "Your score: " + gameController.score;
         networkManager.FetchLeaderboard(
-            gameController.level,
+            gameController.levelName,
             (string error, LeaderboardDTO data) => {
                 if (error != null) {
                     leaderboardTextComponent.text = cantRecieveLeaderboardMessage;
                     Debug.LogError(error);
+                    return;
                 }
 
                 string leaderboardContent = "";
