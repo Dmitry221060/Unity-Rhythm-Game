@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class LevelManagerClass {
     public AudioClip audioClip;
+    public Sprite backgroundImage;
 
     private List<object> notes;
     private List<TrackClass> tracks = new List<TrackClass>();
@@ -26,6 +27,7 @@ public class LevelManagerClass {
 
         notes = GetNotesFromFile($"{pathToLevel}/{levelName}.level");
         audioClip = Resources.Load<AudioClip>($"{pathToLevel}/{levelName}");
+        backgroundImage = Resources.Load<Sprite>($"{pathToLevel}/bg");
     }
 
     public void DestroyAllNotes() {

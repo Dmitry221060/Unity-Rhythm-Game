@@ -9,8 +9,12 @@ public class Button : MonoBehaviour {
     private string key;
     private KeyCode keyCode;
     private Vector3 scale;
+    private bool isKeyPressed;
+    private bool isClicked;
 
-    public bool isPressed { get; private set; }
+    public bool isPressed {
+        get { return isKeyPressed || isClicked; }
+    }
     public float pressedScaleRatio = 0.8f;
 
     private void Start() {
@@ -41,19 +45,29 @@ public class Button : MonoBehaviour {
 #endif
 
     private void FixedUpdate() {
-        bool isPressed = Input.GetKey(keyCode);
+        bool isKeyPressed = Input.GetKey(keyCode);
 
-        if (this.isPressed != isPressed) {
-            DisplayPressure(isPressed);
-            this.isPressed = isPressed;
+        if (this.isKeyPressed != isKeyPressed) {
+            this.isKeyPressed = isKeyPressed;
+            DisplayPressure();
         }
     }
 
-    private void DisplayPressure(bool isPressed) {
+    private void DisplayPressure() {
         if (isPressed) {
             transform.localScale = new Vector3(scale.x * pressedScaleRatio, scale.y * pressedScaleRatio, scale.z);
         } else {
             transform.localScale = scale;
         }
+    }
+
+    private void OnMouseDown() {
+        isClicked = true;
+        DisplayPressure();
+    }
+
+    private void OnMouseUp() {
+        isClicked = false;
+        DisplayPressure();
     }
 }

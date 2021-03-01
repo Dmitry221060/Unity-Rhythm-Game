@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
     public int BPS = 24;
@@ -10,18 +11,20 @@ public class GameController : MonoBehaviour {
     public int lateHitLoyalty = 4;
     public float waitBeforeStart = 3f;
     public const int beatsInTrack = 32;
-    public string level = "Butterfly";
+    public string levelName = "Butterfly";
     public int score { get; private set; } = 0;
-    public int lifes { get; private set; } = 3;
+    public int lifes { get; private set; } = 5;
 
     private GameObject timer;
     private ScoreBar scoreBar;
+    private Image backgroundImage;
     private AudioSource audioSource;
     private LevelManagerClass levelManager;
 
     private IEnumerator Start() {
         timer = GameObject.FindGameObjectWithTag("Timer");
         scoreBar = GameObject.FindGameObjectWithTag("ScoreBar").GetComponent<ScoreBar>();
+        backgroundImage = GameObject.FindGameObjectWithTag("BackgroundImage").GetComponent<Image>();
         audioSource = GetComponent<AudioSource>();
         levelManager = new LevelManagerClass(this);
 
@@ -30,8 +33,9 @@ public class GameController : MonoBehaviour {
     }
 
     private IEnumerator LoadLevel() {
-        levelManager.LoadLevel(level);
+        levelManager.LoadLevel(levelName);
         audioSource.clip = levelManager.audioClip;
+        backgroundImage.sprite = levelManager.backgroundImage;
 
         yield return new WaitForEndOfFrame();
     }
