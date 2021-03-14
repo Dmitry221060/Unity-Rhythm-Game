@@ -4,15 +4,17 @@ using UnityEngine;
 using TMPro;
 
 public class ScoreBar : MonoBehaviour {
-    private TMP_Text scoreTextComponent;
-    private TMP_Text lifesTextComponent;
-
+    public GameObject score;
+    public GameObject lives;
     public string scorePrefix = "Score: ";
-    public string lifesPrefix = "Lifes left: ";
+    public string livesPrefix = "Lives left: ";
+
+    private TMP_Text scoreTextComponent;
+    private TMP_Text livesTextComponent;
 
     private void Start() {
-        scoreTextComponent = transform.GetChild(0).GetComponent<TMP_Text>();
-        lifesTextComponent = transform.GetChild(1).GetComponent<TMP_Text>();
+        scoreTextComponent = score.GetComponent<TMP_Text>();
+        livesTextComponent = lives.GetComponent<TMP_Text>();
     }
 
     public void SetScore(int score) {
@@ -20,6 +22,6 @@ public class ScoreBar : MonoBehaviour {
     }
 
     public void SetLifes(int lifes) {
-        lifesTextComponent.text = lifesPrefix + lifes.ToString();
+        livesTextComponent.text = livesPrefix + lifes.ToString();
     }
 }

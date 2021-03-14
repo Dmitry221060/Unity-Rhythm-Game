@@ -5,34 +5,32 @@ using TMPro;
 
 [ExecuteAlways]
 public class Button : MonoBehaviour {
-    private Track parentTrack;
-    private string key;
-    private KeyCode keyCode;
-    private Vector3 scale;
-    private bool isKeyPressed;
-    private bool isClicked;
-
     public bool isPressed {
         get { return isKeyPressed || isClicked; }
     }
     public float pressedScaleRatio = 0.8f;
 
+    private Track parentTrack;
+    private RectTransform rectTransform;
+    private BoxCollider2D boxCollider;
+    private string key;
+    private KeyCode keyCode;
+    private bool isKeyPressed;
+    private bool isClicked;
+
     private void Start() {
         parentTrack = GetComponentInParent<Track>();
-        key = parentTrack.key;
-        keyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), key);
-        scale = new Vector3(1f, 1f, 1f);
+        rectTransform = GetComponent<RectTransform>();
+        boxCollider = GetComponent<BoxCollider2D>();
 
         Init();
     }
 
     private void Init() {
-        Vector3 parentScale = transform.parent.localScale;
-        float scaledX = 1 / parentScale.x;
-        float scaledY = parentTrack.scale / parentScale.y;
+        key = parentTrack.key;
+        keyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), key);
 
-        scale = new Vector3(scaledX, scaledY, 1f);
-        transform.localScale = scale;
+        boxCollider.size = rectTransform.rect.size;
 
         TMP_Text textComponent = GetComponentInChildren<TMP_Text>();
         textComponent.text = key;
@@ -40,7 +38,7 @@ public class Button : MonoBehaviour {
 
 #if UNITY_EDITOR
     private void Update() {
-        if (Application.isEditor && !Application.isPlaying) Start();
+        if (Application.isEditor && !Application.isPlaying) Init();
     }
 #endif
 
@@ -55,9 +53,9 @@ public class Button : MonoBehaviour {
 
     private void DisplayPressure() {
         if (isPressed) {
-            transform.localScale = new Vector3(scale.x * pressedScaleRatio, scale.y * pressedScaleRatio, scale.z);
+            transform.localScale = new Vector3(pressedScaleRatio, pressedScaleRatio, 1f);
         } else {
-            transform.localScale = scale;
+            transform.localScale = new Vector3(1f, 1f, 1f);
         }
     }
 
