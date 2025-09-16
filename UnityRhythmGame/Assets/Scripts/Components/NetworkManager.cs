@@ -19,9 +19,8 @@ public class NetworkManager : MonoBehaviour {
         ShareScoreRequest requestData = new ShareScoreRequest(level, score);
 
         string requestBody = JsonUtility.ToJson(requestData);
-        byte[] encodedBody = System.Text.Encoding.UTF8.GetBytes(requestBody);
-        UnityWebRequest uwr = UnityWebRequest.Put(methodUrl, encodedBody);
-        uwr.SetRequestHeader("content-type", "application/json");
+        string contentType = "application/json";
+        UnityWebRequest uwr = UnityWebRequest.Post(methodUrl, requestBody, contentType);
         yield return uwr.SendWebRequest();
 
         if (uwr.isNetworkError) {
